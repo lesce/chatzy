@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>Chatzy</title>
+	 <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.ico'}">
+	<script src="@{'/public/javascripts/jquery-1.4.2.min.js'}"type="text/javascript" charset="utf-8"></script>
+	<script src="@{'/public/javascripts/jquery-impromptu.3.1.min.js'}"type="text/javascript" charset="utf-8"></script>
+	<script src="@{'/public/javascripts/jquery.form.js'}" type="text/javascript" charset="utf-8"></script> 
+	<link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/main.css'}">
+
+	<script type="text/javascript">
+	//Refresh the conversation div every 30  miliseconds
+	function show() {
+		xmlhttp=new XMLHttpRequest();
+		xmlhttp.onreadystatechange=function() {
+			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+				$('#conversation').append(xmlhttp.responseText);
+				$('#conversation').scrollTop(100000);
+			}
+		}
+		xmlhttp.open("GET","show",true);
+		xmlhttp.send();
+	}
+	</script>	
+	<script type="text/javascript"> 
+	var name;
+	var txt = 'Baga porecla <br /><input type="text" id="porecla" name="porecla" autofocus value="" />';
+	function mysubmitfunc(v,m,f){
+		an = m.children('#porecla');
+	
+		name=f.porecla;
+		if(f.porecla === undefined || f.porecla === ""){
+			an.css("border","solid #ff0000 1px");
+			return false;
+		}
+		return true;
+
+	}
+	// wait for the DOM to be loaded 
+	$(document).ready(function() { 
+		// bind 'myform' and provide a simple callback function
+		var options = {
+			target: '',
+			replaceTarget: false,
+			data: { nick: name },
+			beforeSubmit: showRequest,
+			success: showResponse,
+			clearForm: true
+		};
+		$('#myform').ajaxForm(options); 
+	});
+
+	function showRequest(formData,jqForm,options) {
+		//var queryString = $.param(formData);
+		//alert('About to submit" \n\n'+queryString);
+		return true;
+	}
+	function showResponse(responseText,statusText,xhr,$form) {
+		//$('#conversation').append(responseText);
+		//alert(responseText);
+	}
+	</script>
+</head>
+<body onload="$.prompt(txt,{submit: mysubmitfunc ,buttons: { Ok:true }});">
+	<div id="container">
+		<div id="header">Chatzy 3000</div>
+		<div id="conversation">
+			<script type="text/javascript">
+			setInterval('show()',300); 
+			</script>
+			<div class="logg">
+			This is the Chatzy 3000 chat server 	
+			</div>
+			<div class="logg">
+			Enjoy .... Muhahhah	//does not work with firefox , opera and probably IE :))
+			</div>
+			<div class="logg">
+			Made by Gutza & Friends Corporation in association with AS-NC co
+			</div>
+		</div>
+		<div id="input">
+			<form id="myform" action="add" method="post">
+				<input type="text" name="message" size="143" autofocus/>
+			</form>
+		</div>
+	</div>
+</body>
